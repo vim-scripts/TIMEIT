@@ -1,0 +1,17 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1622
+
+" Time execution of vim command(s) with subsecond resolution,
+" For example:
+"      :TIM sleep 100m
+" prnits
+"      Execution took   0.100301 sec.
+" With counter, TIMEIT times that many repetitions of the command:
+"      :10TIM sleep 100m
+" prints:
+"      10 repetitions took   1.039352 sec.
+" You can use sequence of |-separated commands under TIM:
+"      :10TIM syntax off | syntax on
+" This will time ten repetitions of (syntax off | syntax on)
+" sequence, not 10 repetitions of "syntax off" followed by
+" one untimes "syntax on".
+
