@@ -1,31 +1,38 @@
-" File:         TimeIt.vim
-" Author:       Yakov Lerner <iler.ml@gmail.com>
-" Last changed: 2006-07-29
+" File:           TimeIt.vim
+" URL:            http://www.vim.org/scripts/script.php?script_id=1622
+" Author:         Yakov Lerner <iler.ml@gmail.com>
+" Last Changed:   2007 Oct 14
+" Contributions:  Andy Wokula, anwoku*yahoo#de (*# -> @.)
 "
-" Time execution of one vim command(s) with subsecond resolution, 
+" Time execution of one vim command(s) with subsecond resolution,
 " For example:
 "      :TIM sleep 100m
-" prnits
+" prints
 "      Execution took   0.100301 sec.
 " With counter, TIMEIT times that many repetitions of the command:
 "      :10TIM sleep 100m
 " prints:
 "      10 repetitions took   1.039352 sec.
 " You can use sequence of |-separated commands under TIM:
-"      :10TIM syntax off | syntax on 
+"      :10TIM syntax off | syntax on
 " This will time ten repetitions of (syntax off | syntax on)
 " sequence, not 10 repetitions of "syntax off" followed by
 " one untimes "syntax on".
 
-if exists("g:g:timeit_plugin") | finish | endif
-let g:timeit_plugin= 1
+if exists("g:loaded_timeit") | finish | endif
+let g:loaded_timeit = 1
 
-command! -nargs=* -range TIMEIT :call TIMEIT(<count>,<q-args>)
+if !has("reltime")
+   echo "TimeIt: Your Vim is compiled without '+reltime' feature"
+   finish
+endif
 
-function! TIMEIT(count, args) range
+command! -nargs=* -count TIMEIT :call TIMEIT(<count>,<q-args>)
+
+function! TIMEIT(count, args)
     let repeat = (a:count <= 0 ? 1 : a:count)
     let k = 0
-    let start=reltime()
+    let start = reltime()
     while k < repeat
         exe a:args
         let k = k + 1
@@ -35,8 +42,8 @@ function! TIMEIT(count, args) range
     redraw
 
     if repeat == 1
-        echo "Execution took " . time ." sec."
+       echomsg "Execution took " . time ." sec."
     else
-        echo repeat . " repetitions took ". time ." sec."
+       echomsg repeat . " repetitions took ". time ." sec."
     endif
 endfu
